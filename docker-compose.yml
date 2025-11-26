@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  nexus-core-service:
+    build: .
+    container_name: nexus-core-compose-container
+    ports:
+      - "8080:8080"
