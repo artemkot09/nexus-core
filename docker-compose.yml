@@ -1,7 +1,37 @@
 version: '3.8'
+
 services:
+  # База даних PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: nexus-postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: nexus_db
+      POSTGRES_USER: nexus_user
+      POSTGRES_PASSWORD: nexus_password
+    ports:
+      - "5432:5432"
+    networks:
+      - nexus-network
+
+  # Твій застосунок
   nexus-core-service:
     build: .
     container_name: nexus-core-compose-container
     ports:
       - "8080:8080"
+    depends_on:
+      - db  # Завдання 3: Старт після бази
+    environment:
+      # Налаштування для підключення до контейнера db всередині мережі Docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/nexus_db
+      SPRING_DATASOURCE_USERNAME: nexus_user
+      SPRING_DATASOURCE_PASSWORD: nexus_password
+    networks:
+      - nexus-network
+
+# Створюємо мережу для зв'язку між контейнерами
+networks:
+  nexus-network:
+    driver: bridge
