@@ -4,5 +4,5 @@ import tech.arcane.nexus.entity.Ticket;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, String> {
-    List<Ticket> findByUserProfileUserProfileId(String userId);
+    List<Ticket> findByUserId(Long userId);
 }

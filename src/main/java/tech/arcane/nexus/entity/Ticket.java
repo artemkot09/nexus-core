@@ -8,13 +8,12 @@ import lombok.Data;
 @Data
 public class Ticket {
     @Id
-    @Column(name = "ticket_id")
     private String ticketId;
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
     @ManyToOne
-    @JoinColumn(name = "user_profile_id")
-    private UserProfile userProfile;
+    @JoinColumn(name = "user_id")
+    private User user;
     private String pnr;
 }
