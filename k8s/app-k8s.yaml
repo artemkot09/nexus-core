@@ -32,11 +32,9 @@ spec:
           imagePullPolicy: Never
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres-service:5432/nexus_db
+              value: "jdbc:postgresql://ep-late-heart-alng012d-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require"
             - name: SPRING_DATASOURCE_USERNAME
-              value: nexus_user
+              value: "neondb_owner"
             - name: SPRING_DATASOURCE_PASSWORD
-              value: nexus_password
-          ports:
-            - containerPort: 8080
+              value: "npg_MdsJVHCY5y9j"
 
