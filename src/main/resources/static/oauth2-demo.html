@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth 2.0 Demo</title>
+</head>
+<body>
+<div id="login-panel" style="display:none">
+    <h2>Ви не авторизовані</h2>
+    <a href="/oauth2/authorization/google" style="padding: 10px; background: #4285F4; color: white; text-decoration: none; border-radius: 5px;">
+        Увійти через Google
+    </a>
+</div>
+
+<div id="profile-panel" style="display:none">
+    <img id="avatar" src="" alt="фото" style="width:100px; border-radius:50%;" />
+    <h1 id="user-name"></h1>
+    <p id="user-email"></p>
+    <button onclick="doLogout()">Вийти</button>
+</div>
+
+<script>
+    console.log("Checking authentication...");
+
+    fetch('/me')
+      .then(res => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
+      .then(data => {
+        console.log("Data received:", data);
+        if (data.error) {
+          document.getElementById('login-panel').style.display = 'block';
+        } else {
+          document.getElementById('profile-panel').style.display = 'block';
+          document.getElementById('avatar').src = data.picture || '';
+          document.getElementById('user-name').textContent = data.name;
+          document.getElementById('user-email').textContent = data.email;
+        }
+      })
+      .catch(err => {
+        console.log("Not logged in or error:", err);
+        // Якщо сталася помилка — показуємо кнопку входу
+        document.getElementById('login-panel').style.display = 'block';
+      });
+
+    function doLogout() {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/logout';
+      document.body.appendChild(form);
+      form.submit();
+    }
+</script>
+</body>
+</html>

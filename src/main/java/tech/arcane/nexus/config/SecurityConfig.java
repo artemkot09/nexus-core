@@ -31,10 +31,19 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Цей рядок дозволяє бачити сторінку БЕЗ введення логіна/пароля
+                        .requestMatchers("/", "/index.html", "/oauth2-demo.html", "/static/**", "/error/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
+                // Залиш oauth2Login, він додасть кнопку входу
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/oauth2-demo.html", true)
+                )
+                // Тимчасово МОЖНА видалити або закоментувати .httpBasic(),
+                // щоб це вікно більше не вискакувало
+                // .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
+
         return http.build();
     }
     @Bean
